@@ -1,0 +1,101 @@
+GET http://localhost:3000/api/platos
+
+
+###
+
+POST http://localhost:3000/api/platos/new
+Content-Type: application/json
+
+{
+    "nombre": "puchero",
+    "ingredientes": ["garbanzos", "zanahoria"],
+    "alergenos": [1, 5, 7],
+    "categoria": "primero"
+    }
+
+###
+
+GET http://localhost:3000/api/platos/cat/primero
+
+
+###
+
+POST http://localhost:3000/api/menus/new
+Content-Type: application/json
+
+{
+    "primero": 1,
+    "segundo": 20, 
+    "postre": 21
+    }
+
+###
+
+GET http://localhost:3000/api/menus
+
+###
+GET http://localhost:3000/api/menus/3
+
+###
+
+GET http://localhost:3000/api/platos/18
+
+###
+GET http://localhost:3000/api/alergenos/3
+
+###
+GET http://localhost:3000/api/ingredientes/6
+
+###
+POST http://localhost:3000/api/ciclos/assign
+Content-Type: application/json
+
+{
+"ciclos_id": 2,
+"menu_id": 7,
+  "fecha": "2022-12-25"
+    }
+
+###
+GET http://localhost:3000/api/ciclos/1
+
+###
+DELETE http://localhost:3000/api/menus/delete/7
+
+###
+GET http://localhost:3000/api/ingredientes/plato/18
+
+###
+GET http://localhost:3000/api/alergenos/plato/18
+
+###
+GET http://localhost:3000/api/usuarios
+###
+GET http://localhost:3000/api/usuarios/id/2
+
+###
+POST http://localhost:3000/api/usuarios/registro
+Content-Type: application/json
+
+{
+    "nombre": "admin",
+    "email": "admin",
+    "password": "admin",
+    "role": "admin"
+}
+
+###
+POST http://localhost:3000/api/usuarios/login
+Content-Type: application/json
+
+{
+    "email": "paquito@gmail.com",
+    "password": "ertbhrt4"
+}
+
+###
+GET http://localhost:3000/api/usuarios/perfil
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3JvbGUiOiJhZG1pbiIsImV4cF9hdCI6MTY3MTQ1Mjk1OCwiaWF0IjoxNjcxMDIwOTU4fQ.aZmlfalC_fo3KeFncbHOz8qkb6YknCC5AiO6dynLeIs
+
+###
+GET http://localhost:3000/api/ciclos/menus/1
