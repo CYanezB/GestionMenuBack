@@ -99,3 +99,25 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3Jv
 
 ###
 GET http://localhost:3000/api/ciclos/menus/1
+
+###
+GET http://localhost:3000/api/usuarios/role/tutor
+
+###
+POST http://localhost:3000/api/usuarios/filtro
+Content-Type: application/json
+
+{
+    "input": "beg"
+}
+
+###
+PUT http://localhost:3000/api/usuarios/3
+Content-Type: application/json
+
+{
+    "role": "tutor"
+  }
+
+###
+DELETE http://localhost:3000/api/usuarios/10

@@ -20,10 +20,30 @@ const getByEmail = (email) => {
     return db.query('select * from usuario where email = ?', [email])
 }
 
+const getByRole = (role) => {
+    return db.query('select * from usuario where role = ?', [role])
+}
+
+const getUserByName = (input) => {
+    return db.query('SELECT * FROM usuario WHERE nombre LIKE ? OR email LIKE ?', [`%${input}%`, `%${input}%`])
+};
+
+const updateRole = (usuario_id, { role }) => {
+    return db.query('UPDATE usuario SET role = ? WHERE id = ?', [role, usuario_id])
+};
+
+const deleteUser = (usuario_id) => {
+    return db.query('DELETE FROM usuario WHERE id = ?', [usuario_id])
+}
+
 
 module.exports = {
     getAll,
     getUserById,
     create,
-    getByEmail
+    getByEmail,
+    getByRole,
+    getUserByName,
+    updateRole,
+    deleteUser
 }

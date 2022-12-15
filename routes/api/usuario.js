@@ -1,4 +1,4 @@
-const { getAll, getUserById, create, getByEmail } = require('../../models/usuarios.model');
+const { getAll, getUserById, create, getByEmail, getByRole, getUserByName, updateRole, deleteUser } = require('../../models/usuarios.model');
 const { checkToken, checkAdmin } = require('../../helpers/middlewares');
 const bcrypt = require('bcryptjs');
 const { createToken } = require('../../helpers/utils');
@@ -27,6 +27,26 @@ router.get('/id/:usuario_id', async (req, res) => {
     try {
         const [usuario] = await getUserById(usuario_id)
         res.json(usuario[0])
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+});
+
+router.get('/role/:role', async (req, res) => {
+    const { role } = req.params;
+    try {
+        const [usuario] = await getByRole(role)
+        res.json(usuario)
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+});
+
+router.post('/filtro', async (req, res) => {
+    const { input } = req.body;
+    try {
+        const [usuario] = await getUserByName(input)
+        res.json(usuario)
     } catch (error) {
         res.json({ fatal: error.message });
     }
@@ -71,6 +91,27 @@ router.post('/login', async (req, res) => {
         success: 'Login correcto',
         token: createToken(usuario)
     })
+});
+
+router.put('/:usuario_id', async (req, res) => {
+    const { usuario_id } = req.params;
+    try {
+        const [result] = await updateRole(usuario_id, req.body);
+        res.json(result);
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+});
+
+router.delete('/:usuario_id', async (req, res) => {
+    const { usuario_id } = req.params;
+    try {
+        const [result] = await deleteUser(usuario_id)
+
+        res.json(result);
+    } catch (error) {
+        res.json({ fatal: error.message })
+    }
 })
 
 
