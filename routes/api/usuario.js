@@ -1,7 +1,9 @@
 const { getAll, getUserById, create, getByEmail, getByRole, getUserByName, updateRole, deleteUser } = require('../../models/usuarios.model');
 const { checkToken, checkAdmin } = require('../../helpers/middlewares');
 const bcrypt = require('bcryptjs');
-const { createToken } = require('../../helpers/utils');
+const { createToken, getDateOfISOWeek, selectWeek } = require('../../helpers/utils');
+const { getByDateAndCiclo } = require('../../models/menu.model');
+const dayjs = require('dayjs')
 
 const router = require('express').Router();
 
@@ -112,7 +114,22 @@ router.delete('/:usuario_id', async (req, res) => {
     } catch (error) {
         res.json({ fatal: error.message })
     }
-})
+});
+
+router.post('/semana', async (req, res) => {
+
+    const { semana, ano, ciclo_id } = req.body;
+
+    let firstWeekDay = getDateOfISOWeek(semana, ano)
+    const arrDays = selectWeek(firstWeekDay)
+    const arrMenus = []
+    for (let day of arrDays) {
+        let formatedDate = dayjs(day).format('YYYY-MM-DD')
+        const [response] = await getByDateAndCiclo(formatedDate, ciclo_id)
+        arrMenus.push(response[0] || null);
+    }
+    res.json(arrMenus)
+});
 
 
 module.exports = router;

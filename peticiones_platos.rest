@@ -121,3 +121,13 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/api/usuarios/10
+
+###
+POST http://localhost:3000/api/usuarios/semana
+Content-Type: application/json
+
+{
+    "semana": 51,
+    "ano": 2022,
+    "ciclo_id": 1
+}
