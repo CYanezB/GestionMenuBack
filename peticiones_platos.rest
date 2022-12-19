@@ -131,3 +131,27 @@ Content-Type: application/json
     "ano": 2022,
     "ciclo_id": 1
 }
+
+###
+
+POST http://localhost:3000/api/comentarios/nuevo
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMSwidXNlcl9yb2xlIjoiYWRtaW4iLCJleHBfYXQiOjE2NzE4MjE5OTQsImlhdCI6MTY3MTM4OTk5NH0.6oqU2cbH56DnYu7FqJ8eELWr_kZ3uC1SyI0DfoMks2w
+Content-Type: application/json
+
+{
+    "mensaje": "Hola comentario de prueba sin id en el body",
+    "menu_id": 6
+}
+
+###
+
+GET http://localhost:3000/api/comentarios/menu/6
+
+###
+GET http://localhost:3000/api/comentarios
+
+###
+GET http://localhost:3000/api/comentarios/usuario/11
+
+###
+DELETE http://localhost:3000/api/comentarios/4
