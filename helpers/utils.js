@@ -32,7 +32,7 @@ const selectWeek = (date) => {
 }
 
 
-const sendMail = ({ user_mail, asunto, innerhtml }) => {
+const sendMail = ({ email, asunto, innerhtml }) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -43,7 +43,7 @@ const sendMail = ({ user_mail, asunto, innerhtml }) => {
 
     const mailOptions = {
         from: 'schoolmenuapp@gmail.com',
-        to: user_mail,
+        to: email,
         subject: asunto,
         html: innerhtml
     };

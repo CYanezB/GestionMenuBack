@@ -1,9 +1,12 @@
-const { getAll, getUserById, create, getByEmail, getByRole, getUserByName, updateRole, deleteUser } = require('../../models/usuarios.model');
+const { getAll, getUserById, create, getByEmail, getByRole, getUserByName, updateRole, deleteUser, asignarCurso } = require('../../models/usuarios.model');
 const { checkToken, checkAdmin } = require('../../helpers/middlewares');
 const bcrypt = require('bcryptjs');
 const { createToken, getDateOfISOWeek, selectWeek, sendMail } = require('../../helpers/utils');
 const { getByDateAndCiclo } = require('../../models/menu.model');
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
+const { getMenuByCicloId, getCiclosByUsuarioId } = require('../../models/ciclos.model');
+var weekOfYear = require('dayjs/plugin/weekOfYear')
+dayjs.extend(weekOfYear)
 
 const router = require('express').Router();
 
@@ -67,6 +70,9 @@ router.post('/registro', async (req, res) => {
             innerhtml: "<p>Bienvenido a SchoolMenu</p>"
         }
         sendMail(mail)
+        for (let ciclo of req.body.ciclos_id) {
+            await asignarCurso(Number(result.insertId), ciclo)
+        }
         res.json(result)
     } catch (error) {
         res.json({ fatal: error.message });
@@ -138,7 +144,52 @@ router.post('/semana', async (req, res) => {
 });
 
 router.post('/sendmail', async (req, res) => {
-    sendMail(req.body)
-})
+
+    // recuperar usuarios tipo tutor
+    let [usuarios] = await getByRole('tutor')
+
+    // recorrer los usuarios y para cada usuario obtener el menu que le corresponda segun el ciclo y la semana
+    for (let usuario of usuarios) {
+        let hoy = dayjs().format('YYYY-MM-DD')
+        let semana = dayjs(hoy).week()
+        let ano = dayjs().year()
+        let firstWeekDay = getDateOfISOWeek(semana - 1, ano)
+        const arrDays = selectWeek(firstWeekDay)
+        let [ciclos] = await getCiclosByUsuarioId(usuario.id)
+        let text = `<h2>MENÚ SEMANAL</h2>
+        <p>Para consulta de ingredientes y alérgenos, visita nuestra web</p>
+        <hr>`;
+        for (let ciclo of ciclos) {
+            console.log(ciclo);
+            text += `<h3>${ciclo.nombre}</h3>`;
+            let arrMenus = []
+            for (let day of arrDays) {
+                let formatedDate = dayjs(day).format('YYYY-MM-DD')
+                console.log(formatedDate, ciclo.ciclos_id);
+                const [response] = await getByDateAndCiclo(formatedDate, ciclo.ciclos_id)
+                arrMenus.push(response[0] || null);
+            }
+            for (let menu of arrMenus) {
+                if (menu) {
+                    text += `<h4>${dayjs(menu.fecha).format('DD-MM-YYYY')}</h4>
+                    <p><strong>Primero:</strong> ${menu.nombre_primero}</p>
+                    <p><strong>Segundo:</strong> ${menu.nombre_segundo}</p>
+                    <p><strong>Postre:</strong> ${menu.nombre_postre}</p>
+                    <hr>`
+                }
+            }
+
+        }
+
+        let mail = {
+            email: usuario.email,
+            asunto: "Menu Semanal",
+            innerhtml: text
+        }
+        sendMail(mail);
+    }
+    res.json('da igual dice mario')
+
+});
 
 module.exports = router;

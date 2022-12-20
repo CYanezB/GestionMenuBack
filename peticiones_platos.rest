@@ -78,10 +78,10 @@ POST http://localhost:3000/api/usuarios/registro
 Content-Type: application/json
 
 {
-    "nombre": "tutor2",
-    "email": "tutor2",
-    "password": "tutor2",
-    "curso_id": 2
+    "nombre": "prueba6",
+    "email": "prueba6",
+    "password": "prueba6",
+    "ciclos_id": [2, 3]
 }
 
 ###
@@ -120,7 +120,7 @@ Content-Type: application/json
   }
 
 ###
-DELETE http://localhost:3000/api/usuarios/10
+DELETE http://localhost:3000/api/usuarios/23
 
 ###
 POST http://localhost:3000/api/usuarios/semana
@@ -158,11 +158,4 @@ DELETE http://localhost:3000/api/comentarios/4
 
 ###
 POST http://localhost:3000/api/usuarios/sendmail
-Content-Type: application/json
 
-{
-    "user_mail": "id.cybp@gmail.com",
-    "asunto": "prueba", 
-    "innerhtml": "<p>Hola</p>"
-
-}

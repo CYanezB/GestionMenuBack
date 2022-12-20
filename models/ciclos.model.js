@@ -12,10 +12,14 @@ const getCicloById = (ciclos_id) => {
     return db.query('select * from ciclos where id = ?', [ciclos_id])
 }
 
+const getCiclosByUsuarioId = (usuario_id) => {
+    return db.query('select * from usuario_has_ciclos uc join ciclos c on c.id = uc.ciclos_id where usuario_id = ?', [usuario_id])
+}
 
 
 module.exports = {
     asignarCiclo,
     getCicloById,
-    getMenuByCicloId
+    getMenuByCicloId,
+    getCiclosByUsuarioId
 }
