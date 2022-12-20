@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 
 const getAll = () => {
@@ -31,9 +32,35 @@ const selectWeek = (date) => {
 }
 
 
+const sendMail = ({ user_mail, asunto, innerhtml }) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'schoolmenuapp@gmail.com',
+            pass: 'zadbprytvbxikzxm'
+        }
+    });
+
+    const mailOptions = {
+        from: 'schoolmenuapp@gmail.com',
+        to: user_mail,
+        subject: asunto,
+        html: innerhtml
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            // do something useful
+        }
+    });
+}
+
 module.exports = {
     getAll,
     createToken,
     getDateOfISOWeek,
-    selectWeek
+    selectWeek,
+    sendMail
 }

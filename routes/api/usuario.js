@@ -1,7 +1,7 @@
 const { getAll, getUserById, create, getByEmail, getByRole, getUserByName, updateRole, deleteUser } = require('../../models/usuarios.model');
 const { checkToken, checkAdmin } = require('../../helpers/middlewares');
 const bcrypt = require('bcryptjs');
-const { createToken, getDateOfISOWeek, selectWeek } = require('../../helpers/utils');
+const { createToken, getDateOfISOWeek, selectWeek, sendMail } = require('../../helpers/utils');
 const { getByDateAndCiclo } = require('../../models/menu.model');
 const dayjs = require('dayjs')
 
@@ -61,7 +61,12 @@ router.post('/registro', async (req, res) => {
         req.body.password = bcrypt.hashSync(req.body.password, 8)
 
         const [result] = await create(req.body)
-
+        let mail = {
+            user_mail: req.body.email,
+            asunto: "Registro en SchoolMenu",
+            innerhtml: "<p>Bienvenido a SchoolMenu</p>"
+        }
+        sendMail(mail)
         res.json(result)
     } catch (error) {
         res.json({ fatal: error.message });
@@ -93,6 +98,7 @@ router.post('/login', async (req, res) => {
         success: 'Login correcto',
         token: createToken(usuario)
     })
+
 });
 
 router.put('/:usuario_id', async (req, res) => {
@@ -131,5 +137,8 @@ router.post('/semana', async (req, res) => {
     res.json(arrMenus)
 });
 
+router.post('/sendmail', async (req, res) => {
+    sendMail(req.body)
+})
 
 module.exports = router;

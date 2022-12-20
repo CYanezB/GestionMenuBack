@@ -89,8 +89,8 @@ POST http://localhost:3000/api/usuarios/login
 Content-Type: application/json
 
 {
-    "email": "paquito@gmail.com",
-    "password": "ertbhrt4"
+    "email": "admin",
+    "password": "admin"
 }
 
 ###
@@ -148,10 +148,21 @@ Content-Type: application/json
 GET http://localhost:3000/api/comentarios/menu/6
 
 ###
-GET http://localhost:3000/api/comentarios
+GET http://localhost:3000/api/comentarios/no
 
 ###
 GET http://localhost:3000/api/comentarios/usuario/11
 
 ###
 DELETE http://localhost:3000/api/comentarios/4
+
+###
+POST http://localhost:3000/api/usuarios/sendmail
+Content-Type: application/json
+
+{
+    "user_mail": "id.cybp@gmail.com",
+    "asunto": "prueba", 
+    "innerhtml": "<p>Hola</p>"
+
+}
