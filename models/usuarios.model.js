@@ -6,10 +6,10 @@ const getUserById = (usuario_id) => {
     return db.query('select * from usuario where id = ?', [usuario_id])
 };
 
-const create = ({ nombre, email, password, role = 'tutor' }) => {
+const create = ({ nombre, email, password, role = 'tutor', curso_id }) => {
     try {
-        return db.query('insert into usuario (nombre, email, password, role) values (?, ?, ?, ?)',
-            [nombre, email, password, role]);
+        return db.query('insert into usuario (nombre, email, password, role, curso_id) values (?, ?, ?, ?, ?)',
+            [nombre, email, password, role, curso_id]);
     } catch (error) {
         res.json({ fatal: error.message });
     }

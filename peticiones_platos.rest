@@ -78,10 +78,10 @@ POST http://localhost:3000/api/usuarios/registro
 Content-Type: application/json
 
 {
-    "nombre": "admin",
-    "email": "admin",
-    "password": "admin",
-    "role": "admin"
+    "nombre": "tutor2",
+    "email": "tutor2",
+    "password": "tutor2",
+    "curso_id": 2
 }
 
 ###
